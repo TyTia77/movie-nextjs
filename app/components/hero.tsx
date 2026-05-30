@@ -8,12 +8,23 @@ import { debounce } from "toolkit";
 
 const GAP = 16; // px, matches gap-4
 
-function Hero(props) {
-  const { data, back, forward, offset, visible, itemWidth } = props;
+const Hero = (props) => {
+  const { data, offset, visible, itemWidth } = props;
 
   // console.log({ data, back, forward, offset, visible, itemWidth });
 
   const resizeRef = useRef(null);
+
+  const delay = debounce(() => {
+    resizeRef.current.classList.remove("opacity-0");
+  }, 1000);
+
+  const fade2black = () => {
+    if (resizeRef.current) {
+      resizeRef.current.classList.add("opacity-0");
+      delay();
+    }
+  };
 
   useEffect(() => {
     const el = resizeRef.current;
@@ -25,17 +36,6 @@ function Hero(props) {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-
-  const delay = debounce(() => {
-    resizeRef.current.classList.remove("opacity-0");
-  }, 1000);
-
-  function fade2black() {
-    if (resizeRef.current) {
-      resizeRef.current.classList.add("opacity-0");
-      delay();
-    }
-  }
 
   const mapped = data.results.map((d) => {
     return {
@@ -249,6 +249,6 @@ function Hero(props) {
       </div>
     </div>
   );
-}
+};
 
 export default WithSlider(Hero);

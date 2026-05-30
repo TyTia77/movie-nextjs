@@ -1,76 +1,81 @@
 "use client";
-import { forwardRef } from "react";
-import WithSlider from "./withSlider";
 
+import WithSlider from "./withSlider";
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback } from "react";
 import { paths } from "../api/fetch";
 
-const ITEMS_VISIBLE = 3;
+// const ITEMS_LENGTH = 3;
 const GAP = 16; // px, matches gap-4
-const INTERVAL_MS = 100000;
+// const INTERVAL_MS = 5000;
 
-const items = [
-  {
-    id: 0,
-    label: "Ocean",
-    tag: "New",
-    desc: "Shoreline ready, boardroom approved.",
-    bg: "linear-gradient(135deg, #0d1b2a, #1b3a5c)",
-    accent: "#7db3d6",
-    text: "#f0f4f8",
-  },
-  {
-    id: 1,
-    label: "Golden Hour",
-    tag: "Limited",
-    desc: "The hour before sunset, bottled.",
-    bg: "linear-gradient(135deg, #3d1c00, #6b3400)",
-    accent: "#e8a96b",
-    text: "#fdf4ec",
-  },
-  {
-    id: 2,
-    label: "Forest",
-    tag: "Eco",
-    desc: "Materials that give back every season.",
-    bg: "linear-gradient(135deg, #0d1f0d, #2d6b2d)",
-    accent: "#7dcc7d",
-    text: "#edf7ed",
-  },
-  {
-    id: 3,
-    label: "Dusk",
-    tag: "SS25",
-    desc: "Where day meets night in perfect balance.",
-    bg: "linear-gradient(135deg, #1a0a2e, #4a1a6b)",
-    accent: "#c89be8",
-    text: "#f5eeff",
-  },
-  {
-    id: 4,
-    label: "Ember",
-    tag: "Hot",
-    desc: "Warmth that lasts long after dark.",
-    bg: "linear-gradient(135deg, #2e0a0a, #7a2020)",
-    accent: "#e88a7d",
-    text: "#fff0ee",
-  },
-  {
-    id: 5,
-    label: "Arctic",
-    tag: "FW25",
-    desc: "Clean lines for the coldest mornings.",
-    bg: "linear-gradient(135deg, #0a1a2e, #1a3a5c)",
-    accent: "#a8d4f5",
-    text: "#eef6ff",
-  },
-];
+// const items = [
+//   {
+//     id: 0,
+//     label: "Ocean",
+//     tag: "New",
+//     desc: "Shoreline ready, boardroom approved.",
+//     bg: "linear-gradient(135deg, #0d1b2a, #1b3a5c)",
+//     accent: "#7db3d6",
+//     text: "#f0f4f8",
+//   },
+//   {
+//     id: 1,
+//     label: "Golden Hour",
+//     tag: "Limited",
+//     desc: "The hour before sunset, bottled.",
+//     bg: "linear-gradient(135deg, #3d1c00, #6b3400)",
+//     accent: "#e8a96b",
+//     text: "#fdf4ec",
+//   },
+//   {
+//     id: 2,
+//     label: "Forest",
+//     tag: "Eco",
+//     desc: "Materials that give back every season.",
+//     bg: "linear-gradient(135deg, #0d1f0d, #2d6b2d)",
+//     accent: "#7dcc7d",
+//     text: "#edf7ed",
+//   },
+//   {
+//     id: 3,
+//     label: "Dusk",
+//     tag: "SS25",
+//     desc: "Where day meets night in perfect balance.",
+//     bg: "linear-gradient(135deg, #1a0a2e, #4a1a6b)",
+//     accent: "#c89be8",
+//     text: "#f5eeff",
+//   },
+//   {
+//     id: 4,
+//     label: "Ember",
+//     tag: "Hot",
+//     desc: "Warmth that lasts long after dark.",
+//     bg: "linear-gradient(135deg, #2e0a0a, #7a2020)",
+//     accent: "#e88a7d",
+//     text: "#fff0ee",
+//   },
+//   {
+//     id: 5,
+//     label: "Arctic",
+//     tag: "FW25",
+//     desc: "Clean lines for the coldest mornings.",
+//     bg: "linear-gradient(135deg, #0a1a2e, #1a3a5c)",
+//     accent: "#a8d4f5",
+//     text: "#eef6ff",
+//   },
+// ];
 
-const CardStacks = forwardRef(function (props, ref) {
-  const { data, back, forward, offset, itemWidth, visible } = props;
+const CardStacks = (props, ref) => {
+  const {
+    data,
+    // back,
+    // forward,
+    offset,
+    itemWidth,
+    visible,
+  } = props;
 
-  console.log({ data, back, forward, offset, itemWidth, visible });
+  // console.log({ data, back, forward, offset, itemWidth, visible });
 
   const mapped = data.results.map((x) => {
     return {
@@ -87,7 +92,7 @@ const CardStacks = forwardRef(function (props, ref) {
   });
 
   return (
-    <div ref={ref} className="w-full font-sans select-none">
+    <div className="w-full font-sans select-none">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
         .hs-track { transition: transform 0.55s cubic-bezier(.4,0,.2,1); }
@@ -109,7 +114,7 @@ const CardStacks = forwardRef(function (props, ref) {
           {mapped.map((item) => (
             <div
               key={item.id}
-              className="flex flex-col hs-card shrink-0 cursor-pointer "
+              className="flex flex-col hs-card shrink-0 cursor-pointer transition duration-200 hover:opacity-[.8]"
               style={{
                 width:
                   itemWidth ||
@@ -248,6 +253,6 @@ const CardStacks = forwardRef(function (props, ref) {
       </div>
     </div>
   );
-});
+};
 
 export default WithSlider(CardStacks);

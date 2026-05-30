@@ -11,9 +11,15 @@ export async function authenticatedFetch(url, options = {}) {
 
 export const paths = {
   keys: {
+    person: "/person",
+    popular: "/popular",
+
     movie: "/movie",
     upcoming: "/upcoming",
     top_rated: "/top_rated",
+
+    tv: "/tv",
+    airing_today: "/airing_today",
   },
   base: "https://api.themoviedb.org/3",
   images: {

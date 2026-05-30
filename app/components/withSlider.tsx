@@ -1,83 +1,22 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Button from "./button";
 
-// ── Config ──────────────────────────────────────────────────────────────────
-// itemsVisible: how many items show at once in the viewport
-// gap: px gap between items (must match the gap-* class below)
-//  = 3;
+const ITEMS_LENGTH = 1;
 const GAP = 16; // px, matches gap-4
-const INTERVAL_MS = 10000;
 
-const items = [
-  {
-    id: 0,
-    label: "Ocean",
-    tag: "New",
-    desc: "Shoreline ready, boardroom approved.",
-    bg: "linear-gradient(135deg, #0d1b2a, #1b3a5c)",
-    accent: "#7db3d6",
-    text: "#f0f4f8",
-  },
-  {
-    id: 1,
-    label: "Golden Hour",
-    tag: "Limited",
-    desc: "The hour before sunset, bottled.",
-    bg: "linear-gradient(135deg, #3d1c00, #6b3400)",
-    accent: "#e8a96b",
-    text: "#fdf4ec",
-  },
-  {
-    id: 2,
-    label: "Forest",
-    tag: "Eco",
-    desc: "Materials that give back every season.",
-    bg: "linear-gradient(135deg, #0d1f0d, #2d6b2d)",
-    accent: "#7dcc7d",
-    text: "#edf7ed",
-  },
-  {
-    id: 3,
-    label: "Dusk",
-    tag: "SS25",
-    desc: "Where day meets night in perfect balance.",
-    bg: "linear-gradient(135deg, #1a0a2e, #4a1a6b)",
-    accent: "#c89be8",
-    text: "#f5eeff",
-  },
-  {
-    id: 4,
-    label: "Ember",
-    tag: "Hot",
-    desc: "Warmth that lasts long after dark.",
-    bg: "linear-gradient(135deg, #2e0a0a, #7a2020)",
-    accent: "#e88a7d",
-    text: "#fff0ee",
-  },
-  {
-    id: 5,
-    label: "Arctic",
-    tag: "FW25",
-    desc: "Clean lines for the coldest mornings.",
-    bg: "linear-gradient(135deg, #0a1a2e, #1a3a5c)",
-    accent: "#a8d4f5",
-    text: "#eef6ff",
-  },
-];
-
-// ── Component ────────────────────────────────────────────────────────────────
-export default function WithSlider(WrappedComponent) {
+export default function (WrappedComponent) {
   return (props) => {
-    const { visible, data, interval = -1 } = props;
-    const itemLen = data?.results.length || items.length;
-    const ITEMS_VISIBLE = visible || 1;
+    const { visible = ITEMS_LENGTH, data, interval = -1 } = props;
+    const itemLen = data?.results.length || 0;
+    // const ITEMS_VISIBLE = visible || ITEMS_LENGTH;
     const trackRef = useRef(null);
     const [offset, setOffset] = useState(0); // px translateX (negative = scrolled right)
-    const [progress, setProgress] = useState(0);
+    // const [progress, setProgress] = useState(0);
     const autoTimer = useRef(null);
-    const progressTimer = useRef(null);
-    const progressStart = useRef(null);
+    // const progressTimer = useRef(null);
+    // const progressStart = useRef(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
     const trackPos = useRef(0);
@@ -115,7 +54,7 @@ export default function WithSlider(WrappedComponent) {
 
     // Width of one item = (container - total gaps) / visible count
     const itemWidth = containerWidth
-      ? (containerWidth - GAP * (ITEMS_VISIBLE - 1)) / ITEMS_VISIBLE
+      ? (containerWidth - GAP * (visible - 1)) / visible
       : 0;
 
     // One "page" scrolls by exactly one item width + gap
@@ -165,7 +104,7 @@ export default function WithSlider(WrappedComponent) {
             return next > maxOffset ? 0 : next;
           });
           // startProgress();
-        }, INTERVAL_MS);
+        }, interval);
         // startProgress();
       }
     }, [stepPx, maxOffset]);
@@ -175,7 +114,7 @@ export default function WithSlider(WrappedComponent) {
       startAuto();
       return () => {
         clearInterval(autoTimer.current);
-        clearInterval(progressTimer.current);
+        // clearInterval(progressTimer.current);
       };
     }, [startAuto, itemWidth]);
 
@@ -203,9 +142,20 @@ export default function WithSlider(WrappedComponent) {
     // });
 
     return (
-      <div ref={trackRef} className="relative">
+      <div ref={trackRef} className="relative w-[100%]">
+        <Button
+          className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 left-5 -translate-y-1/2 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out"
+          text={"←"}
+          // disabled={canPrev}
+          onClick={handlePrev}
+        />
+        <Button
+          className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 right-5 -translate-y-1/2 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out"
+          text={"→"}
+          // disabled={false}
+          onClick={handleNext}
+        />
         <WrappedComponent
-          // ref={trackRef}
           {...{
             ...props,
             back: handlePrev,
@@ -214,29 +164,30 @@ export default function WithSlider(WrappedComponent) {
             offset,
           }}
         />
-        <button
+
+        {/* <button
           className=" absolute top-1/2 left-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out"
           style={{
             background: "rgba(255,255,255,0.12)",
-            transform: "translateY(-50%)",
+            // transform: "translateY(-50%)",
           }}
           onClick={handlePrev}
           aria-label="Previous slide"
         >
           ←
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           className="absolute top-1/2 right-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out"
           style={{
             background: "rgba(255,255,255,0.12)",
-            transform: "translateY(-50%)",
+            // transform: "translateY(-50%)",
           }}
           onClick={handleNext}
           aria-label="Next slide"
         >
           →
-        </button>
+        </button> */}
       </div>
     );
   };
