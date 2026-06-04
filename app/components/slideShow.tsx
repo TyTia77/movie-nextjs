@@ -1,21 +1,26 @@
 "use client";
 
-import WithSlider from "./useSlider";
-// import Image from "next/image";
-// import { paths } from "../api/fetch";
+import WithSlider from "./withSlider";
 import { getComponent } from "../util/util";
 
 const GAP = 16;
 
-function CardStacks(props) {
+type slideShowType = {
+  data: any;
+  offset: number;
+  onTransitionEnd: any;
+  component: any;
+};
+
+function SlideShow(props: slideShowType) {
   const {
     data,
     offset,
-    itemWidth,
-    visible,
+    // itemWidth,
+    // visible,
     onTransitionEnd,
-    canPrev,
-    canNext,
+    // canPrev,
+    // canNext,
     component,
   } = props;
 
@@ -35,7 +40,7 @@ function CardStacks(props) {
           onTransitionEnd={onTransitionEnd}
           style={{ gap: GAP, transform: `translateX(-${offset}px)` }}
         >
-          {data.results.map((item, i) => (
+          {data.results.map((item, i: number) => (
             <Component key={i} {...{ ...props, item, i }} />
           ))}
         </div>
@@ -44,4 +49,4 @@ function CardStacks(props) {
   );
 }
 
-export default WithSlider(CardStacks, { mode: "track" });
+export default WithSlider(SlideShow, { mode: "track" });

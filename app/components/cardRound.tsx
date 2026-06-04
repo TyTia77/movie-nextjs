@@ -2,11 +2,17 @@
 
 import { paths } from "../api/fetch";
 
-export default function (props) {
+type cardRoundType = {
+  item: any;
+  itemWidth: number;
+  visible: boolean;
+  i: number;
+};
+
+export default function (props: cardRoundType) {
   const GAP = 16;
 
   const { item, itemWidth, visible, i } = props;
-
   const { name, profile_path } = item;
 
   return (
@@ -29,16 +35,3 @@ export default function (props) {
     </div>
   );
 }
-
-//         <div className="flex flex-col">
-//   <div className="relative w-50 h-50 flex self-center">
-//     <img
-//       src={paths.images.base + profile_path}
-//       className="w-50 h-50 rounded-full object-cover"
-//     />
-//     {/* <button className="absolute bottom-1 right-1 w-6 h-6 rounded-full bg-black/80 text-white text-lg flex items-center justify-center">
-//     +
-//   </button> */}
-//   </div>
-//   <div className="flex p-2 justify-center">{name}</div>
-// </div>

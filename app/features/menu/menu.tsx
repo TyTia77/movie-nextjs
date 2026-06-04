@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "../components/logo";
+import Logo from "./logo";
 
 export default function () {
   const [menuOpen, setMenuOpen] = useState(false);

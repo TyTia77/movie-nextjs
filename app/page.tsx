@@ -1,28 +1,34 @@
-import Hero from "./components/hero";
-import { paths } from "./api/fetch";
+// import { paths } from "./api/fetch";
 import WithApi from "./components/withApi";
-import CardStacks from "./components/cardStacks";
-import Round from "./components/roundCard";
-import Stacker from "./components/stacker";
 
-import UseHero from "./components/useHero";
-import UseCard from "./components/useCard";
-import Card from "./components/card";
+import SlideRotate from "./components/slideRotate";
+import SlideShow from "./components/slideShow";
+
+import CardRound from "./components/cardRound";
+// import Card from "./components/cards/card";
+
+import CardMovies from "./components/cards/cardMovies";
+import CardTVs from "./components/cards/cardTvs";
 
 import Title from "./components/title";
+
+import fetchTvShows from "./api/fetchTvShows";
+import fetchPopularActors from "./api/fetchPopularActors";
+import fetchTopratedMovies from "./api/fetchTopratedMovies";
+
+import fetchUpcomingMovies from "./api/fetchUpcomingMovies";
+import Hero from "./features/hero/facade";
 
 export default function Home() {
   return (
     <div className="grid grid-cols-1 grid-rows-[1fr_1fr_200px_1fr_100px] gap-2 overflow-hidden">
-      {/* <div className="height-[100%]">
-        <Menu />
-      </div> */}
       <div className="">
-        <WithApi
+        {/* <WithApi
           interval={5000}
-          api={`${paths.base + paths.keys.movie + paths.keys.upcoming}`}
-          component={[UseHero]}
-        />
+          api={fetchUpcomingMovies}
+          component={[SlideRotate, Hero]}
+        /> */}
+        <Hero />
       </div>
       <div className="">
         <div className="flex flex-col w-full ">
@@ -31,8 +37,8 @@ export default function Home() {
           <WithApi
             // interval={5000}
             // visible={4}
-            api={`${paths.base + paths.keys.movie + paths.keys.top_rated}`}
-            component={[UseCard, Card]}
+            api={fetchTopratedMovies}
+            component={[SlideShow, CardMovies]}
           />
         </div>
       </div>
@@ -47,8 +53,8 @@ export default function Home() {
               768: 5,
               1024: 6,
             }}
-            api={`${paths.base + paths.keys.person + paths.keys.popular}`}
-            component={[UseCard, Round]}
+            api={fetchPopularActors}
+            component={[SlideShow, CardRound]}
           />
         </div>
 
@@ -59,8 +65,8 @@ export default function Home() {
             <WithApi
               // interval={5000}
               // visible={4}
-              api={`${paths.base + paths.keys.tv + paths.keys.airing_today}`}
-              component={[UseCard, Card]}
+              api={fetchTvShows}
+              component={[SlideShow, CardTVs]}
             />
           </div>
         </div>

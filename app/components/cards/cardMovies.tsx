@@ -1,9 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { paths } from "../api/fetch";
+import { paths } from "../../api/fetch";
+import WithCard from "./card";
 
-export default function MovieCard(props) {
+type cardType = {
+  item: any;
+  itemWidth: number;
+  visible: boolean;
+  i: number;
+};
+
+export default WithCard(function (props: cardType) {
   const GAP = 16;
   const { item, itemWidth, visible, i } = props;
 
@@ -18,13 +26,7 @@ export default function MovieCard(props) {
   };
 
   return (
-    <div
-      className="cs-card flex flex-col shrink-0 cursor-pointer gap-2"
-      style={{
-        width:
-          itemWidth || `calc((100% - ${GAP * (visible - 1)}px) / ${visible})`,
-      }}
-    >
+    <>
       {/* Rating above image */}
       <span
         className="self-start text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full"
@@ -38,7 +40,7 @@ export default function MovieCard(props) {
 
       {/* Image */}
       <div
-        className="relative w-full overflow-hidden rounded-xl"
+        className="my-2 relative w-full overflow-hidden rounded-xl"
         style={{ aspectRatio: "2/3" }}
       >
         <Image
@@ -70,6 +72,6 @@ export default function MovieCard(props) {
           {mapped.votes.toLocaleString()} votes
         </div>
       </div>
-    </div>
+    </>
   );
-}
+});
