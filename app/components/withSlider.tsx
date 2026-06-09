@@ -1,6 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { ResponseType } from "../api/fetch";
+
+import { PopularActorsType } from "../features/actors/api";
+import { UpcomingMoviesType } from "../features/hero/api";
+import { TopratedMovieType } from "../features/movies/api";
+import { TvShowType } from "../features/tvShows/api";
 
 const GAP = 16;
 
@@ -11,7 +17,7 @@ const DEFAULT_BREAKPOINTS = {
   1024: 5,
 };
 
-export type withSliderType = {
+export type withSliderProps = {
   visible?: number;
   interval?: number;
   breakpoints?: {
@@ -20,17 +26,35 @@ export type withSliderType = {
     768: number;
     1024: number;
   };
-  data: any;
+  data: ResponseType<
+    | PopularActorsType[]
+    | UpcomingMoviesType[]
+    | TopratedMovieType[]
+    | TvShowType[]
+  >;
 };
 
-export default function WithSlider(WrappedComponent, { mode = "track" } = {}) {
-  return function SliderWrapper(props: withSliderType) {
+export type WithSliderInjectedProps = {
+  onTransitionEnd: () => void;
+  itemWidth: number;
+  offset: number;
+  currentIndex: number;
+  prevIndex: number;
+  direction: number;
+  totalItems: number;
+  gap: number;
+};
+
+export default function WithSlider<
+  T extends withSliderProps & WithSliderInjectedProps,
+>(WrappedComponent: React.ComponentType<T>, { mode = "track" } = {}) {
+  return function SliderWrapper(props: Omit<T, keyof WithSliderInjectedProps>) {
     const {
       visible = 0,
       data,
       interval = -1,
       breakpoints = DEFAULT_BREAKPOINTS,
-    } = props;
+    } = props as T;
 
     const items = data?.results ?? [];
     const itemLen = items.length;
@@ -150,9 +174,7 @@ export default function WithSlider(WrappedComponent, { mode = "track" } = {}) {
     return (
       <div ref={trackRef} className="relative w-full">
         <WrappedComponent
-          {...props}
-          // back={handlePrev}
-          // forward={handleNext}
+          {...(props as T)}
           onTransitionEnd={handleTransitionEnd}
           itemWidth={itemWidth}
           offset={offset}
@@ -160,8 +182,7 @@ export default function WithSlider(WrappedComponent, { mode = "track" } = {}) {
           prevIndex={prevIndex}
           direction={direction}
           totalItems={itemLen}
-          // canPrev={canPrev}
-          // canNext={canNext}
+          gap={GAP}
         />
 
         {/* {mode === "track" && ( */}
@@ -170,7 +191,8 @@ export default function WithSlider(WrappedComponent, { mode = "track" } = {}) {
             onClick={handlePrev}
             disabled={!canPrev}
             aria-label="Previous slide"
-            className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 -translate-y-1/2 left-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
+            className="bg-[#F59E0B] opacity-[.8] absolute top-1/2 -translate-y-1/2 left-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
+            // className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 -translate-y-1/2 left-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
           >
             ←
           </button>
@@ -178,7 +200,8 @@ export default function WithSlider(WrappedComponent, { mode = "track" } = {}) {
             onClick={handleNext}
             disabled={!canNext}
             aria-label="Next slide"
-            className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 -translate-y-1/2 right-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
+            className="bg-[#F59E0B] opacity-[.8] absolute top-1/2 -translate-y-1/2 right-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
+            // className="bg-[rgba(255,255,255,0.12)] absolute top-1/2 -translate-y-1/2 right-5 z-10 w-11 h-11 rounded-full flex items-center justify-center text-lg text-white border-0 cursor-pointer transition-all duration-[180ms] ease-in-out hover:scale-110 disabled:opacity-0"
           >
             →
           </button>

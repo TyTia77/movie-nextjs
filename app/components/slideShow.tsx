@@ -1,30 +1,17 @@
 "use client";
 
 import WithSlider from "./withSlider";
-import { getComponent } from "../util/util";
+import { WithSliderInjectedProps, withSliderProps } from "./withSlider";
 
-const GAP = 16;
+export type SlideShowProps = WithSliderInjectedProps &
+  withSliderProps & {
+    component: React.ComponentType<any>[];
+  };
 
-type slideShowType = {
-  data: any;
-  offset: number;
-  onTransitionEnd: any;
-  component: any;
-};
+function SlideShow(props: SlideShowProps) {
+  const { data, offset, onTransitionEnd, component, gap } = props;
 
-function SlideShow(props: slideShowType) {
-  const {
-    data,
-    offset,
-    // itemWidth,
-    // visible,
-    onTransitionEnd,
-    // canPrev,
-    // canNext,
-    component,
-  } = props;
-
-  const [Component, componentList] = getComponent(component);
+  const [Component, ...componentList] = component;
 
   return (
     <div className="w-full font-sans select-none">
@@ -38,7 +25,7 @@ function SlideShow(props: slideShowType) {
         <div
           className="cs-track flex"
           onTransitionEnd={onTransitionEnd}
-          style={{ gap: GAP, transform: `translateX(-${offset}px)` }}
+          style={{ gap, transform: `translateX(-${offset}px)` }}
         >
           {data.results.map((item, i: number) => (
             <Component key={i} {...{ ...props, item, i }} />

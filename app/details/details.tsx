@@ -1,4 +1,8 @@
+"use client";
+
 import { useState } from "react";
+import ImageRound from "@/app/components/image";
+import { paths } from "@/app/api/fetch";
 
 const MOCK_DATA = {
   movie: {
@@ -211,7 +215,7 @@ function Badge({ label, accent }) {
 }
 
 export default function DetailsPage() {
-  const [activeType, setActiveType] = useState("movie");
+  const [activeType, setActiveType] = useState("tvshow");
   const data = MOCK_DATA[activeType];
 
   const isDark = activeType !== "tvshow";
@@ -326,7 +330,7 @@ export default function DetailsPage() {
               fontFamily: "'Georgia', serif",
             }}
           >
-            {data.title}
+            {data.name}
           </h1>
 
           {/* Tagline */}
@@ -380,8 +384,8 @@ export default function DetailsPage() {
                 </span>
               </>
             )}
-            {data.genres.map((g) => (
-              <Badge key={g} label={g} accent={data.accentColor} />
+            {props.response.genres.map((g) => (
+              <Badge key={g.id} label={g.name} accent={data.accentColor} />
             ))}
           </div>
 
@@ -499,7 +503,7 @@ export default function DetailsPage() {
               margin: 0,
             }}
           >
-            {data.overview}
+            {props.response.overview}
           </p>
         </section>
 

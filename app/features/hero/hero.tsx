@@ -1,27 +1,18 @@
 "use client";
 
-// import { useRef, useEffect } from "react";
-// import WithSlider from "./withSlider";
 import Image from "next/image";
-import { paths } from "../api/fetch";
-// import { debounce } from "toolkit";
+import { paths } from "../../api/fetch";
+import { SlideRotateProps } from "./slideRotate";
+import Link from "next/link";
+import { UpcomingMoviesType } from "@/app/features/hero/api";
 
-const GAP = 16; // px, matches gap-4
-
-type heroType = {
-  item: any;
-
-  offset: number;
-  visible: boolean;
-  itemWidth: number;
-  onTransitionEnd: any;
-  currentIndex: number;
-  prevIndex: number;
-  direction: number;
+type heroProps = SlideRotateProps & {
+  component: React.ComponentType<any>[];
   i: number;
+  item: UpcomingMoviesType;
 };
 
-export default function (props: heroType) {
+export default function (props: heroProps) {
   const {
     item,
     // back,
@@ -34,6 +25,7 @@ export default function (props: heroType) {
     prevIndex,
     direction,
     i,
+    gap: Gap,
   } = props;
 
   const mapped = {
@@ -144,16 +136,17 @@ export default function (props: heroType) {
           >
             {mapped.desc}
           </p>
-
-          <button
-            className="hs-cta inline-flex items-center gap-2.5 px-[26px] py-[13px] rounded-full text-[13px] font-medium tracking-[0.04em] border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out w-fit"
-            style={{ background: mapped.ctaBg, color: mapped.ctaText }}
-          >
-            {mapped.cta}
-            <span className="hs-arrow text-base inline-block transition-transform duration-[180ms] ease-in-out">
-              →
-            </span>
-          </button>
+          <Link href={`/movie/${mapped.id}`}>
+            <button
+              className="hs-cta inline-flex items-center gap-2.5 px-[26px] py-[13px] rounded-full text-[13px] font-medium tracking-[0.04em] border-0 cursor-pointer transition-[transform,opacity] duration-[180ms] ease-in-out w-fit"
+              style={{ background: mapped.ctaBg, color: mapped.ctaText }}
+            >
+              {mapped.cta}
+              {/* <span className="hs-arrow text-base inline-block transition-transform duration-[180ms] ease-in-out">
+                →
+              </span> */}
+            </button>
+          </Link>
         </div>
       </div>
     </>

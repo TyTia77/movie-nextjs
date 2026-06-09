@@ -3,8 +3,8 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { Product } from "../data/products";
 import api from "./api";
-import SlideRotate from "@/app/components/slideRotate";
-import Hero from "@/app/components/hero";
+import SlideRotate from "@/app/features/hero/slideRotate";
+import Hero from "@/app/features/hero/hero";
 // export interface CartItem extends Product {
 //   quantity: number;
 // }

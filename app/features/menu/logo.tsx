@@ -7,7 +7,7 @@ export default function ({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(100, 24)">
-        <rect x="0" y="0" width="108" height="108" rx="14" fill="#E8000F" />
+        <rect x="0" y="0" width="108" height="108" rx="14" fill="#F59E0B" />
         <rect
           x="9"
           y="8"
@@ -72,7 +72,7 @@ export default function ({ className }: { className?: string }) {
           fontFamily="Georgia, 'Times New Roman', serif"
         >
           <tspan fill="currentColor">Cine</tspan>
-          <tspan fill="#E8000F">DB</tspan>
+          <tspan fill="#F59E0B">DB</tspan>
         </text>
         <text
           x="128"

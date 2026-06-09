@@ -1,8 +1,8 @@
-import { authenticatedFetch, paths, ResponseType } from "./fetch";
+import { authenticatedFetch, paths, ResponseType } from "@/app/api/fetch";
 
-type TopratedMovieResponse = ResponseType<TopratedMovie[]>;
+export type TopratedMovieResponse = ResponseType<TopratedMovieType[]>;
 
-type TopratedMovie = {
+export type TopratedMovieType = {
   backdrop_path: string;
   genre_ids: number[];
   id: number;

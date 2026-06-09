@@ -1,8 +1,8 @@
-import { authenticatedFetch, paths, ResponseType } from "./fetch";
+import { authenticatedFetch, paths, ResponseType } from "@/app/api/fetch";
 
-type PopularActorsResponse = ResponseType<PopularActors[]>;
+export type PopularActorsResponse = ResponseType<PopularActorsType[]>;
 
-type PopularActors = {
+export type PopularActorsType = {
   adult: boolean;
   gender: number;
   id: number;
@@ -28,7 +28,7 @@ type PopularActors = {
   }[];
 };
 
-const path = paths.base + paths.keys.person + paths.keys.popular;
+const path = paths.base + "/person/popular";
 
 export default async function (): Promise<PopularActorsResponse> {
   const data = await authenticatedFetch<PopularActorsResponse>(path);

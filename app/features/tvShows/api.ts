@@ -1,8 +1,8 @@
-import { authenticatedFetch, paths, ResponseType } from "./fetch";
+import { authenticatedFetch, paths, ResponseType } from "@/app/api/fetch";
 
-type TvShowResponse = ResponseType<TvShow[]>;
+export type TvShowResponse = ResponseType<TvShowType[]>;
 
-type TvShow = {
+export type TvShowType = {
   backdrop_path: string;
   first_air_date: string;
   genre_ids: number[];
@@ -18,7 +18,7 @@ type TvShow = {
   vote_count: number;
 };
 
-const path = paths.base + paths.keys.tv + paths.keys.airing_today;
+const path = paths.base + "/tv/airing_today";
 
 export default async function (): Promise<TvShowResponse> {
   const data = await authenticatedFetch<TvShowResponse>(path);

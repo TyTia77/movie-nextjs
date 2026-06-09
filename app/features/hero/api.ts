@@ -1,13 +1,13 @@
 import { authenticatedFetch, paths, ResponseType } from "../../api/fetch";
 
-type UpcomingMoviesResponse = ResponseType<UpcomingMovies[]> & {
+export type UpcomingMoviesResponse = ResponseType<UpcomingMoviesType[]> & {
   dates: {
     maximum: string;
     minimum: string;
   };
 };
 
-type UpcomingMovies = {
+export type UpcomingMoviesType = {
   id: number;
   adult: boolean;
   backdrop_path: string;
