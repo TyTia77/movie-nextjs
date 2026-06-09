@@ -1,25 +1,17 @@
 "use client";
 
-import WithSlider from "./useSlider";
-// import Image from "next/image";
-// import { paths } from "../api/fetch";
-import { getComponent } from "../util/util";
+import WithSlider from "./withSlider";
+import { WithSliderInjectedProps, withSliderProps } from "./withSlider";
 
-const GAP = 16;
+export type SlideShowProps = WithSliderInjectedProps &
+  withSliderProps & {
+    component: React.ComponentType<any>[];
+  };
 
-function CardStacks(props) {
-  const {
-    data,
-    offset,
-    itemWidth,
-    visible,
-    onTransitionEnd,
-    canPrev,
-    canNext,
-    component,
-  } = props;
+function SlideShow(props: SlideShowProps) {
+  const { data, offset, onTransitionEnd, component, gap } = props;
 
-  const [Component, componentList] = getComponent(component);
+  const [Component, ...componentList] = component;
 
   return (
     <div className="w-full font-sans select-none">
@@ -33,9 +25,9 @@ function CardStacks(props) {
         <div
           className="cs-track flex"
           onTransitionEnd={onTransitionEnd}
-          style={{ gap: GAP, transform: `translateX(-${offset}px)` }}
+          style={{ gap, transform: `translateX(-${offset}px)` }}
         >
-          {data.results.map((item, i) => (
+          {data.results.map((item, i: number) => (
             <Component key={i} {...{ ...props, item, i }} />
           ))}
         </div>
@@ -44,4 +36,4 @@ function CardStacks(props) {
   );
 }
 
-export default WithSlider(CardStacks, { mode: "track" });
+export default WithSlider(SlideShow, { mode: "track" });
