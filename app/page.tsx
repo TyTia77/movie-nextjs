@@ -1,30 +1,35 @@
-import Hero from "./components/hero";
-import { paths } from "./api/fetch";
-import WithApi from "./components/withApi";
-import CardStacks from "./components/cardStacks";
+import Title from "./components/title";
+import Hero from "./features/hero/facade";
+import Actors from "./features/actors/facade";
+import TvShows from "./features/tvShows/facade";
+import Movies from "./features/movies/facade";
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-1 grid-rows-[40px_1fr_1fr_1fr_1fr_1fr] gap-2">
-      <div className=" ">menu</div>
-      <div className=" ">
-        <WithApi
-          interval={5000}
-          api={`${paths.base + paths.keys.movie + paths.keys.upcoming}`}
-          component={Hero}
-        />
+    <div className="grid grid-cols-1 grid-rows-[1fr_1fr_200px_1fr_100px] gap-2 overflow-hidden">
+      <div className="">
+        <Hero />
       </div>
       <div className="">
-        <WithApi
-          // interval={5000}
-          visible={3}
-          api={`${paths.base + paths.keys.movie + paths.keys.top_rated}`}
-          component={CardStacks}
-        />
+        <div className="flex flex-col w-full ">
+          <Title title="Top Rated Movies" />
+          <Movies />
+        </div>
       </div>
-      <div className=""></div>
-      <div className="">topmove</div>
-      <div className="h-[200px] ">actor</div>
+
+      <div className="">
+        <div className="flex flex-col w-full pb-5">
+          <Title title="Popular Actors" />
+          <Actors />
+        </div>
+
+        <div className="">
+          <div className="flex flex-col w-full ">
+            <Title title="Tv Shows On Today" />
+            <TvShows />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
